@@ -7,6 +7,7 @@ import time
 from glob import glob
 import argparse
 import numpy as np
+import mmaction_diff
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Run breakfast')

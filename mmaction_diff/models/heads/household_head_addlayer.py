@@ -2,9 +2,8 @@ import torch
 import torch.nn as nn
 from mmcv.cnn import normal_init
 
-from ..builder import HEADS
-from .base import AvgConsensus, BaseHead
-
+from mmaction.models.builder import HEADS
+from mmaction.models.heads.base import AvgConsensus, BaseHead
 
 @HEADS.register_module()
 class HOUSEHOLDHead_ADDLAYER(BaseHead):
