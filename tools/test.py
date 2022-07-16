@@ -17,6 +17,10 @@ from mmaction.models import build_model
 from mmaction.utils import (build_ddp, build_dp, default_device,
                             register_module_hooks, setup_multi_processes)
 
+import sys
+sys.path.append("..") # Adds higher directory to python modules path.
+import mmaction_diff.models.heads.household_head_nonaddlayer
+
 # TODO import test functions from mmcv and delete them from mmaction2
 try:
     from mmcv.engine import multi_gpu_test, single_gpu_test

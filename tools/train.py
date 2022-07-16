@@ -20,6 +20,10 @@ from mmaction.models import build_model
 from mmaction.utils import (collect_env, get_root_logger,
                             register_module_hooks, setup_multi_processes)
 
+import sys
+sys.path.append("..") # Adds higher directory to python modules path.
+import mmaction_diff.models.heads.household_head_nonaddlayer
+
 
 def parse_args():
     parser = argparse.ArgumentParser(description='Train a recognizer')
