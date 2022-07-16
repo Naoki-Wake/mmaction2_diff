@@ -17,6 +17,9 @@ from mmaction.datasets import build_dataset
 from mmaction.models import build_model
 from mmaction.utils import collect_env, get_root_logger, register_module_hooks
 
+import sys
+sys.path.append("..") # Adds higher directory to python modules path.
+import mmaction_diff.models.heads.household_head_nonaddlayer
 def count_parameters(model):
     total_params = 0
     for name, parameter in model.named_parameters():
