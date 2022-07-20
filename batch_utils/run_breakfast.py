@@ -56,8 +56,8 @@ if __name__ == '__main__':
         '--dir-videos-root',
         default='/lfovision_sthv2_breakfast/',
         type=str)
-    parser.add_argument('--videos-per-gpu', default=80, type=int)
-    parser.add_argument('--workers-per-gpu', default=20, type=int)
+    parser.add_argument('--videos-per-gpu', default=8, type=int)
+    parser.add_argument('--workers-per-gpu', default=6, type=int)
     parser.add_argument('--lr', default=0.0075, type=float)
     parser.add_argument('--weight-decay', default=0.0005, type=float)
     parser.add_argument('--momentum', default=0.9, type=float)
