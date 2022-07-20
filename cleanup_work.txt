@@ -1,0 +1,2 @@
+git diff  12f1..7d845b0164cc284d49be4ba0c5476ee4563a7f8e .\tools\test.py
+git diff --name-status --diff-filter=D 12f1..7d845b0164cc284d49be4ba0c5476ee4563a7f8e > ./deleted_files.txt

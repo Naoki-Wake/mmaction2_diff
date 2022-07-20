@@ -8,6 +8,18 @@ from glob import glob
 import argparse
 import numpy as np
 
+# example
+# python /tmp/repo/batch_utils/run_breakfast.py --lr 0.01 --bn-freeze 0 --scheduler-cosine 1 --workers-per-gpu 15
+# python /tmp/repo/batch_utils/run_breakfast.py --work-dir-name --lr 0.01
+# --bn-freeze 1 --scheduler-cosine 1 --workers-per-gpu 15 --load-from
+# /lfovision_log/tsm_learningrate/lr_0.01_wd_0.0005_momentum_0.9_bn_true_cosine
+# --work-dir-root /lfovision_log/tsm_after_manual_correction/
+# --train-file-path
+# /lfovision_sthv2_breakfast/annotations/experiment_tsm_after_manual_correction/iteration_1_after_manualcheck/breakfast_train_list_videos_mixed.txt
+# --val-file-path
+# /lfovision_sthv2_breakfast/annotations/experiment_tsm_after_manual_correction/breakfast_val_list_videos.txt
+# --test-file-path
+# /lfovision_sthv2_breakfast/annotations/experiment_tsm_after_manual_correction/breakfast_test_list_videos.txt
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Run breakfast')
     parser.add_argument('--dir-root', default='/tmp/repo', type=str)
@@ -29,6 +41,18 @@ if __name__ == '__main__':
         default='/lfovision_sthv2_breakfast/annotations/with_pseudo_largedatanum/',
         type=str)
     parser.add_argument(
+        '--train-file-path',
+        default='',
+        type=str)
+    parser.add_argument(
+        '--test-file-path',
+        default='',
+        type=str)
+    parser.add_argument(
+        '--val-file-path',
+        default='',
+        type=str)
+    parser.add_argument(
         '--dir-videos-root',
         default='/lfovision_sthv2_breakfast/',
         type=str)
@@ -38,10 +62,33 @@ if __name__ == '__main__':
     parser.add_argument('--weight-decay', default=0.0005, type=float)
     parser.add_argument('--momentum', default=0.9, type=float)
     parser.add_argument('--epochs', default=50, type=int)
-    parser.add_argument('--bn-freeze', default=True, type=bool)
-    parser.add_argument('--scheduler-cosine', default=False, type=bool)
+    parser.add_argument('--bn-freeze', default=1, type=int)
+    parser.add_argument('--scheduler-cosine', default=0, type=int)
+    parser.add_argument('--only-header', default=1, type=int)
+    parser.add_argument('--base-frozen-stages', default=-1, type=int)
     args = parser.parse_args()
     # ----settings-----
+    if len(args.train_file_path) == 0:
+        train_file_path = osp.join(
+            args.train_file_dir,
+            'breakfast_train_list_videos.txt')
+    else:
+        train_file_path = args.train_file_path
+
+    if len(args.val_file_path) == 0:
+        val_file_path = osp.join(
+            args.train_file_dir,
+            'breakfast_val_list_videos.txt')
+    else:
+        val_file_path = args.val_file_path
+
+    if len(args.test_file_path) == 0:
+        test_file_path = osp.join(
+            args.train_file_dir,
+            'breakfast_test_list_videos.txt')
+    else:
+        test_file_path = args.test_file_path
+
     fp_config_out = '/tmp/config.py'
     if args.work_dir_name == '':
         work_dir_name = "lr_{}_wd_{}_momentum_{}".format(
@@ -49,9 +96,12 @@ if __name__ == '__main__':
     else:
         work_dir_name = args.work_dir_name
 
-    if args.bn_freeze:
+    if args.bn_freeze == 1:
         work_dir_name += "_bn_true"
-    if args.scheduler_cosine:
+        bool_bn_freeze = True
+    else:
+        bool_bn_freeze = False
+    if args.scheduler_cosine == 1:
         work_dir_name += "_cosine"
 
     print('work_dir_name:', work_dir_name)
@@ -61,36 +111,27 @@ if __name__ == '__main__':
         'work_dir': osp.join(
             args.work_dir_root,
             work_dir_name),
-        'data.train.ann_file': osp.join(
-            args.train_file_dir,
-            'breakfast_train_list_videos.txt'),
-        'data.val.ann_file': osp.join(
-            args.train_file_dir,
-            'breakfast_val_list_videos.txt'),
-        'data.test.ann_file': osp.join(
-            args.train_file_dir,
-            'breakfast_test_list_videos.txt'),
+        'data.train.ann_file': train_file_path,
+        'data.val.ann_file': val_file_path,
+        'data.test.ann_file': test_file_path,
         'data.train.data_prefix': args.dir_videos_root,
         'data.val.data_prefix': args.dir_videos_root,
         'data.test.data_prefix': args.dir_videos_root,
         'load_from': args.load_from,
         'data_root': args.dir_videos_root,
         'data_root_val': args.dir_videos_root,
-        'ann_file_train': osp.join(
-            args.train_file_dir,
-            'breakfast_train_list_videos.txt'),
-        'ann_file_val': osp.join(
-            args.train_file_dir,
-            'breakfast_val_list_videos.txt'),
-        'ann_file_test': osp.join(
-            args.train_file_dir,
-            'breakfast_test_list_videos.txt'),
+        'ann_file_train': train_file_path,
+        'ann_file_val': val_file_path,
+        'ann_file_test': test_file_path,
         'data.videos_per_gpu': args.videos_per_gpu,
         'data.workers_per_gpu': args.workers_per_gpu,
         'optimizer.lr': args.lr,
         'optimizer.weight_decay': args.weight_decay,
         'optimizer.momentum': args.momentum,
-        'model.backbone.norm_eval': args.bn_freeze,
+        'model.backbone.norm_eval': bool_bn_freeze,
+        'model.backbone.frozen_stages': args.base_frozen_stages,
+        # frozen_stages (int): Stages to be frozen (all param fixed). -1 means
+        # not freezing any parameters. Default: -1.
         'total_epochs': args.epochs}
     if osp.exists(
         osp.join(
@@ -101,7 +142,7 @@ if __name__ == '__main__':
             args.work_dir_root,
             work_dir_name,
             'latest.pth')
-    if args.scheduler_cosine:
+    if args.scheduler_cosine == 1:
         cfg_options['lr_config'] = dict(
             policy='CosineAnnealing',
             by_epoch=False,
@@ -115,8 +156,14 @@ if __name__ == '__main__':
     cfg.merge_from_dict(cfg_options)
     cfg.dump(fp_config_out)
 
-    train_command = str(osp.join(args.dir_root, "tools/dist_train_onlyheader.sh")) + \
-        " " + fp_config_out + " 1 --validate --seed 0 --deterministic --gpu-ids 0"
+    if args.only_header == 1:
+        #train_command = str(osp.join(args.dir_root, "tools/dist_train_onlyheader.sh")) + \
+        #    " " + fp_config_out + " 1 --validate --seed 0 --deterministic --gpu-ids 0"
+        train_command = "python " + str(osp.join(args.dir_root, "tools/train_onlyheader.py")) + \
+            " " + fp_config_out + " --validate --seed 0 --deterministic --gpu-ids 0"
+    else:
+        train_command = "python " + str(osp.join(args.dir_root, "tools/train.py")) + \
+            " " + fp_config_out + " --validate --seed 0 --deterministic --gpu-ids 0"
     import subprocess
     print(train_command)
     if not osp.exists(osp.join(

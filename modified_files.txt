@@ -1,0 +1,17 @@
+M	.gitignore
+M	docker/Dockerfile
+M	mmaction/apis/inference.py
+M	mmaction/datasets/pipelines/__init__.py
+M	mmaction/datasets/pipelines/augmentations.py
+M	mmaction/datasets/pipelines/loading.py
+M	mmaction/datasets/pipelines/pose_loading.py
+M	mmaction/datasets/rawframe_dataset.py
+M	mmaction/models/backbones/resnet.py
+M	mmaction/models/heads/__init__.py
+M	tools/data/activitynet/generate_rawframes_filelist.py
+M	tools/data/activitynet/process_annotations.py
+M	tools/data/activitynet/tsn_feature_extraction.py
+M	tools/data/build_file_list.py
+M	tools/data/parse_file_list.py
+M	tools/misc/bsn_proposal_generation.py
+M	tools/test.py
