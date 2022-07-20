@@ -107,7 +107,6 @@ if __name__ == '__main__':
 
     print('work_dir_name:', work_dir_name)
     cfg = Config.fromfile(osp.join(args.dir_root, args.config))
-    import pdb; pdb.set_trace()
     cfg_options = {
         'work_dir': osp.join(
             args.work_dir_root,
@@ -154,6 +153,8 @@ if __name__ == '__main__':
             warmup_ratio=0.1)
     else:
         cfg_options['lr_config'] = dict(policy='step', step=[20, 40])
+    import pdb; pdb.set_trace()
+    cfg.model.cls_head.class_bias = []
     cfg.merge_from_dict(cfg_options)
     cfg.dump(fp_config_out)
 
