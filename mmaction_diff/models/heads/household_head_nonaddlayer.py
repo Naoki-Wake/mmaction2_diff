@@ -39,6 +39,7 @@ class HOUSEHOLDHead_NONADDLAYER(BaseHead):
                  init_std=0.001,
                  is_shift=True,
                  temporal_pool=False,
+                 class_bias = [],
                  **kwargs):
         super().__init__(num_classes, in_channels, loss_cls, **kwargs)
         self.spatial_type = spatial_type
@@ -47,7 +48,9 @@ class HOUSEHOLDHead_NONADDLAYER(BaseHead):
         self.init_std = init_std
         self.is_shift = is_shift
         self.temporal_pool = temporal_pool
-
+        self.class_bias = class_bias
+        import pdb;
+        pdb.set_trace()
         consensus_ = consensus.copy()
 
         consensus_type = consensus_.pop('type')
