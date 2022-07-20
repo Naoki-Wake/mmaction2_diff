@@ -154,7 +154,7 @@ if __name__ == '__main__':
     else:
         cfg_options['lr_config'] = dict(policy='step', step=[20, 40])
 
-    cfg_options.model.cls_head.class_bias = []
+    cfg.model.cls_head.class_bias = []
     cfg.merge_from_dict(cfg_options)
     cfg.dump(fp_config_out)
 
