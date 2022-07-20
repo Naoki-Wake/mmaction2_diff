@@ -49,11 +49,7 @@ class HOUSEHOLDHead_NONADDLAYER(BaseHead):
         self.is_shift = is_shift
         self.temporal_pool = temporal_pool
         self.class_bias = class_bias
-        import pdb;
-        pdb.set_trace()
-        if len(class_bias) == 0:
-            # error
-            raise ValueError('class_bias is empty')
+
         consensus_ = consensus.copy()
 
         consensus_type = consensus_.pop('type')
@@ -102,7 +98,11 @@ class HOUSEHOLDHead_NONADDLAYER(BaseHead):
             x = self.dropout(x)
         # [N * num_segs, num_classes]
         cls_score = self.fc_cls(x)
-        
+        import pdb;
+        pdb.set_trace()
+        if len(self.class_bias) == 0:
+            # error
+            raise ValueError('class_bias is empty')        
         if self.is_shift and self.temporal_pool:
             # [2 * N, num_segs // 2, num_classes]
             cls_score = cls_score.view((-1, self.num_segments // 2) +
