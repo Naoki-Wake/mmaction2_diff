@@ -107,7 +107,7 @@ if __name__ == '__main__':
 
     print('work_dir_name:', work_dir_name)
     cfg = Config.fromfile(osp.join(args.dir_root, args.config))
-
+    import pdb; pdb.set_trace()
     cfg_options = {
         'work_dir': osp.join(
             args.work_dir_root,
