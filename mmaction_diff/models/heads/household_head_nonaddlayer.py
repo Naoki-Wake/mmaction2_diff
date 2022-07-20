@@ -51,6 +51,9 @@ class HOUSEHOLDHead_NONADDLAYER(BaseHead):
         self.class_bias = class_bias
         import pdb;
         pdb.set_trace()
+        if len(class_bias) == 0:
+            # error
+            raise ValueError('class_bias is empty')
         consensus_ = consensus.copy()
 
         consensus_type = consensus_.pop('type')
