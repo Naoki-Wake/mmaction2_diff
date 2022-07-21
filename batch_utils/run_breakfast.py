@@ -75,7 +75,7 @@ if __name__ == '__main__':
     parser.add_argument('--base-frozen-stages', default=-1, type=int)
     parser.add_argument('--modify-class-bias', default=0, type=int)
     parser.add_argument('--flip', default=0, type=int)
-    parser.add_argument('--debug', default=0, type=int)
+    parser.add_argument('--color', default=0, type=int)
     args = parser.parse_args()
     # ----settings-----
     if len(args.train_file_path) == 0:
@@ -195,8 +195,7 @@ if __name__ == '__main__':
             dict(type='ToTensor', keys=['imgs', 'label'])
         ]
         cfg.train_pipeline = cfg.data.train.pipeline
-    if args.debug == 1:
-        
+    if args.color == 1 and args.flip == 1:
         cfg.data.train.pipeline = [
             dict(type='DecordInit'),
             dict(
@@ -216,6 +215,7 @@ if __name__ == '__main__':
             dict(type='Collect', keys=['imgs', 'label'], meta_keys=[]),
             dict(type='ToTensor', keys=['imgs', 'label'])
         ]
+        import pdb; pdb.set_trace()
         cfg.train_pipeline = cfg.data.train.pipeline
     cfg.merge_from_dict(cfg_options)
     cfg.dump(fp_config_out)
