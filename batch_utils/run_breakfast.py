@@ -20,8 +20,7 @@ import numpy as np
 # /lfovision_sthv2_breakfast/annotations/experiment_tsm_after_manual_correction/breakfast_val_list_videos.txt
 # --test-file-path
 # /lfovision_sthv2_breakfast/annotations/experiment_tsm_after_manual_correction/breakfast_test_list_videos.txt
-echo "LR: $LR_STR"
-python3 launch.py --cmd "python /tmp/repo/batch_utils/run_breakfast.py --lr 0.0001 --bn-freeze 1 --scheduler-cosine 1 --videos-per-gpu 6 --workers-per-gpu 4 --work-dir-root /lfovision_log/tsm_learningrate_alllayers_considering_labelbias/ --only-header 0 --base-frozen-stages 1"
+# python3 launch.py --cmd "python /tmp/repo/batch_utils/run_breakfast.py --lr 0.0001 # --bn-freeze 1 --scheduler-cosine 1 --videos-per-gpu 6 --workers-per-gpu 4 # --work-dir-root /lfovision_log/tsm_learningrate_alllayers_considering_labelbias/ # --only-header 0 --base-frozen-stages 1 --modify-class-bias 1"
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Run breakfast')
     parser.add_argument('--dir-root', default='/tmp/repo', type=str)
