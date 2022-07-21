@@ -65,7 +65,7 @@ if __name__ == '__main__':
     plt.grid(True)
     # save figure
     #plt.show()
-    plt.savefig(str(osp(dir_out,'label_weight.png')))
+    plt.savefig(str(osp.join(dir_out,'label_weight.png')))
     # clear figure
     plt.clf()
 
@@ -76,9 +76,10 @@ if __name__ == '__main__':
     plt.grid(True)
     # save figure
     #plt.show()
-    plt.savefig(osp(dir_out,'label_bias.png'))
+    plt.savefig(osp.join(dir_out,'label_bias.png'))
     # clear figure
     plt.clf()
     #copy this python file to /lfovision_log/debug/check_weight_data_balance
     import shutil
     shutil.copy('./check_weight_data_balance.py',osp(dir_out,'check_weight_data_balance.py'))
+    

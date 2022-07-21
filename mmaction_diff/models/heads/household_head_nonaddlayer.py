@@ -49,7 +49,7 @@ class HOUSEHOLDHead_NONADDLAYER(BaseHead):
         self.is_shift = is_shift
         self.temporal_pool = temporal_pool
         self.class_bias = class_bias
-
+        self.logP = hogehoge# memo: register buffer
         consensus_ = consensus.copy()
 
         consensus_type = consensus_.pop('type')
@@ -63,7 +63,7 @@ class HOUSEHOLDHead_NONADDLAYER(BaseHead):
         else:
             self.dropout = None
         
-        self.fc_cls = nn.Linear(self.in_channels, self.num_classes)
+        self.fc_cls = nn.Linear(self.in_channels, self.num_classes) # bias=False
 
         if self.spatial_type == 'avg':
             # use `nn.AdaptiveAvgPool2d` to adaptively match the in_channels.
@@ -111,7 +111,14 @@ class HOUSEHOLDHead_NONADDLAYER(BaseHead):
         # [N, num_classes]
         import pdb;
         pdb.set_trace()
-        #if len(self.class_bias) == 0:
-        #    # error
-        #    raise ValueError('class_bias is empty') 
-        return cls_score.squeeze(1)
+        ret = cls_score.squeeze(1)
+        if len(self.class_bias) == self.num_classes:
+            y = torch.FloatTensor(self.class_bias).to(0)
+            y.repeat(cls_score.shape[0],1)
+            return ret+y
+        else:
+            return cls_score.squeeze(1)
+    def loss(self, cls_score, labels, **kwargs):
+        cls_score = cls_score + self.logP # no need to repeat
+        losses = super().loss(cls_score, labels, **kwargs)
+        return losses
