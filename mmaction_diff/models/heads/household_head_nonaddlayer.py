@@ -50,6 +50,7 @@ class HOUSEHOLDHead_NONADDLAYER(BaseHead):
         self.temporal_pool = temporal_pool
         logP = class_bias
         #self.logP = hogehoge# memo: register buffer
+        import pdb;pdb.set_trace()
         self.register_buffer('logP', logP)
         if len(self.class_bias) == self.num_classes:
             self.modify_class_bias = True
