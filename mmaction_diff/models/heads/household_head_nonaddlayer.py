@@ -49,7 +49,7 @@ class HOUSEHOLDHead_NONADDLAYER(BaseHead):
         self.is_shift = is_shift
         self.temporal_pool = temporal_pool
         self.class_bias = class_bias
-        self.logP = hogehoge# memo: register buffer
+        #self.logP = hogehoge# memo: register buffer
         consensus_ = consensus.copy()
 
         consensus_type = consensus_.pop('type')
@@ -118,7 +118,7 @@ class HOUSEHOLDHead_NONADDLAYER(BaseHead):
             return ret+y
         else:
             return cls_score.squeeze(1)
-    def loss(self, cls_score, labels, **kwargs):
-        cls_score = cls_score + self.logP # no need to repeat
-        losses = super().loss(cls_score, labels, **kwargs)
-        return losses
+#    def loss(self, cls_score, labels, **kwargs):
+#        cls_score = cls_score + self.logP # no need to repeat
+#        losses = super().loss(cls_score, labels, **kwargs)
+#        return losses
