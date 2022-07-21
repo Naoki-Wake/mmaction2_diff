@@ -182,7 +182,6 @@ if __name__ == '__main__':
                 clip_len=1,
                 frame_interval=1,
                 num_clips=8),
-            # the definition of 1x1x8 comes from here
             dict(type='DecordDecode'),
             dict(type='Resize', scale=(224, 224), keep_ratio=False, lazy=True),
             dict(type='Flip', flip_ratio=0.5),
