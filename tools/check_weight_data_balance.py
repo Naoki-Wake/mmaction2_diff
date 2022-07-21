@@ -81,5 +81,5 @@ if __name__ == '__main__':
     plt.clf()
     #copy this python file to /lfovision_log/debug/check_weight_data_balance
     import shutil
-    shutil.copy('./check_weight_data_balance.py',osp(dir_out,'check_weight_data_balance.py'))
+    shutil.copy('./check_weight_data_balance.py',osp.join(dir_out,'check_weight_data_balance.py'))
     
