@@ -55,7 +55,7 @@ if __name__ == '__main__':
     #weights = [np.linalg.norm(weight[row,:], ord=2) for row in range(11)]
     # normalize
     weights = weights/np.max(weights)
-    
+    import pdb; pdb.set_trace()
     if os.path.exists(args.outpathdir) is False:
         os.makedirs(args.outpathdir)
     # scatter plot
