@@ -8,7 +8,7 @@ import argparse
 import matplotlib.pyplot as plt
 import sys
 sys.path.append("..") # Adds higher directory to python modules path.
-import mmaction_diff
+import mmaction_diff.models.heads.household_head_nonaddlayer
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Run breakfast')
     parser.add_argument('--dir-root', default='/tmp/repo', type=str)
@@ -45,8 +45,8 @@ if __name__ == '__main__':
 
     labels = [int(item.split(' ')[1].strip()) for item in lines]
     #print(labels)
-    import pdb; pdb.set_trace()
-    label_count = [labels.count(i) for i in range(len(list(set(labels))))]
+    class_num = len(list(set(labels)))
+    label_count = [labels.count(i) for i in range(class_num)]
     label_count = np.array(label_count)
     # normalize
     label_count = label_count/np.max(label_count)
