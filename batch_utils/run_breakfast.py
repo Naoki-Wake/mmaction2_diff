@@ -74,6 +74,7 @@ if __name__ == '__main__':
     parser.add_argument('--only-header', default=1, type=int)
     parser.add_argument('--base-frozen-stages', default=-1, type=int)
     parser.add_argument('--modify-class-bias', default=0, type=int)
+    parser.add_argument('--flip', default=0, type=int)
     parser.add_argument('--debug', default=0, type=int)
     args = parser.parse_args()
     # ----settings-----
@@ -172,7 +173,7 @@ if __name__ == '__main__':
         cfg.optimizer.constructor = 'TSMOptimizerConstructor_WO_BIAS'
     else:
         cfg.model.cls_head.class_bias = []
-    if args.debug == 1:
+    if args.flip == 1:
         #import pdb
         # pdb.set_trace()
         cfg.data.train.pipeline = [
