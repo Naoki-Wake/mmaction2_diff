@@ -52,14 +52,12 @@ class HOUSEHOLDHead_NONADDLAYER(BaseHead):
         self.class_bias = class_bias
         class_bias = np.array(class_bias)
         class_bias = class_bias/np.sum(class_bias)
-        logP = np.log(class_bias)
+        logP = torch.from_numpy(np.log(class_bias))
         #self.logP = hogehoge# memo: register buffer
-        import pdb;pdb.set_trace()
         self.register_buffer('logP', logP)
         if len(self.class_bias) == self.num_classes:
             self.modify_class_bias = True
             print('modify class bias using logP')
-            import pdb;pdb.set_trace()
         else:
             self.modify_class_bias = False
         consensus_ = consensus.copy()
