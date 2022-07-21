@@ -1,3 +1,4 @@
+from re import A
 from mmcv import Config, DictAction
 from numpy import argsort
 from mmaction.apis import inference_recognizer, init_recognizer
@@ -68,7 +69,7 @@ if __name__ == '__main__':
     parser.add_argument('--only-header', default=1, type=int)
     parser.add_argument('--base-frozen-stages', default=-1, type=int)
     parser.add_argument('--modify-class-bias', default=0, type=int)
-    
+    parser.add_argument('--debug', default=0, type=int)
     args = parser.parse_args()
     # ----settings-----
     if len(args.train_file_path) == 0:
@@ -166,6 +167,8 @@ if __name__ == '__main__':
         cfg.optimizer.constructor='TSMOptimizerConstructor_WO_BIAS'
     else:
         cfg.model.cls_head.class_bias = []
+    if args.debug == 1:
+        import pdb; pdb.set_trace()
     cfg.merge_from_dict(cfg_options)
     cfg.dump(fp_config_out)
 
