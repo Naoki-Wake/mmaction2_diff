@@ -1,6 +1,7 @@
 import torch
 import torch.nn as nn
 from mmcv.cnn import normal_init
+import numpy as np
 
 from mmaction.models.builder import HEADS
 from mmaction.models.heads.base import AvgConsensus, BaseHead
@@ -48,13 +49,17 @@ class HOUSEHOLDHead_NONADDLAYER(BaseHead):
         self.init_std = init_std
         self.is_shift = is_shift
         self.temporal_pool = temporal_pool
-        logP = class_bias
+        self.class_bias = class_bias
+        class_bias = np.array(class_bias)
+        class_bias = class_bias/np.sum(class_bias)
+        logP = np.log(class_bias)
         #self.logP = hogehoge# memo: register buffer
         import pdb;pdb.set_trace()
         self.register_buffer('logP', logP)
         if len(self.class_bias) == self.num_classes:
             self.modify_class_bias = True
             print('modify class bias using logP')
+            import pdb;pdb.set_trace()
         else:
             self.modify_class_bias = False
         consensus_ = consensus.copy()
