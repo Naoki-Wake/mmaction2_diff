@@ -163,7 +163,7 @@ if __name__ == '__main__':
         class_num = len(list(set(labels)))
         label_count = [labels.count(i) for i in range(class_num)]
         cfg.model.cls_head.class_bias = label_count
-        cfg.optimizer.constructor='TSMOptimizerConstructor'
+        cfg.optimizer.constructor='TSMOptimizerConstructor_WO_BIAS'
     else:
         cfg.model.cls_head.class_bias = []
     cfg.merge_from_dict(cfg_options)

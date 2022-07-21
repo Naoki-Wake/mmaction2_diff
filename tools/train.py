@@ -211,7 +211,6 @@ def main():
             config=cfg.pretty_text)
 
     test_option = dict(test_last=args.test_last, test_best=args.test_best)
-    import pdb;pdb.set_trace()
     train_model(
         model,
         datasets,
