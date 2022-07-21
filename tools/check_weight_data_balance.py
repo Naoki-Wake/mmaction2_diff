@@ -21,7 +21,7 @@ if __name__ == '__main__':
         default='/lfovision_sthv2_breakfast/annotations/with_pseudo_largedatanum/',
         type=str)
     parser.add_argument(
-        '--outdir',
+        '--outpathdir',
         default='/lfovision_log/debug/check_weight_data_balance/',
         type=str)
 
@@ -56,8 +56,8 @@ if __name__ == '__main__':
     # normalize
     weights = weights/np.max(weights)
     
-    if os.path.exists(args.outdir) is False:
-        os.makedirs(args.outdir)
+    if os.path.exists(args.outpathdir) is False:
+        os.makedirs(args.outpathdir)
     # scatter plot
     plt.scatter(label_count,weights)
     plt.xlabel('label ratio')
@@ -65,11 +65,10 @@ if __name__ == '__main__':
     plt.grid(True)
     # save figure
     #plt.show()
-    plt.savefig(osp(args.outdir,'label_weight.png'))
+    plt.savefig(str(osp(args.outpathdir,'label_weight.png')))
     # clear figure
     plt.clf()
 
-    bias = np.load('./bias.npy')
     bias = bias/np.max(bias)
     plt.scatter(label_count,bias)
     plt.xlabel('label ratio')
@@ -77,7 +76,7 @@ if __name__ == '__main__':
     plt.grid(True)
     # save figure
     #plt.show()
-    plt.savefig(osp(args.outdir,'label_bias.png'))
+    plt.savefig(osp(args.outpathdir,'label_bias.png'))
     # clear figure
     plt.clf()
     #copy this python file to /lfovision_log/debug/check_weight_data_balance
