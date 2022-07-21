@@ -64,7 +64,9 @@ if __name__ == '__main__':
     plt.ylabel('weight')
     plt.grid(True)
     # save figure
-    #plt.show()
+    #plt.show() 
+    # insert text in the figure
+    plt.text(0.5, 0.5, args.checkpointdir, fontsize=20, ha='center')
     plt.savefig(str(osp.join(dir_out,'label_weight.png')))
     # clear figure
     plt.clf()
@@ -74,6 +76,7 @@ if __name__ == '__main__':
     plt.xlabel('label ratio')
     plt.ylabel('bias')
     plt.grid(True)
+    plt.text(0.5, 0.5, args.checkpointdir, fontsize=20, ha='center')
     # save figure
     #plt.show()
     plt.savefig(osp.join(dir_out,'label_bias.png'))
