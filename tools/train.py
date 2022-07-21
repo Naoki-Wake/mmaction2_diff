@@ -23,7 +23,7 @@ from mmaction.utils import (collect_env, get_root_logger,
 import sys
 sys.path.append("..") # Adds higher directory to python modules path.
 import mmaction_diff.models.heads.household_head_nonaddlayer
-
+import mmaction_diff.core.optimizer.tsm_optimizer_constructor_wo_bias
 
 def parse_args():
     parser = argparse.ArgumentParser(description='Train a recognizer')
