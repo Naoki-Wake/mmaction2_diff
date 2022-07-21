@@ -5,7 +5,7 @@ import mmcv
 import numpy as np
 from torch.nn.modules.utils import _pair
 
-from mmaction.models.builder import PIPELINES
+from mmaction.datasets.builder import PIPELINES
 from PIL import Image
 import os
 import math
