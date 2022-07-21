@@ -195,6 +195,28 @@ if __name__ == '__main__':
             dict(type='ToTensor', keys=['imgs', 'label'])
         ]
         cfg.train_pipeline = cfg.data.train.pipeline
+    if args.debug == 1:
+        
+        cfg.data.train.pipeline = [
+            dict(type='DecordInit'),
+            dict(
+                type='SampleFrames',
+                clip_len=1,
+                frame_interval=1,
+                num_clips=8),
+            dict(type='DecordDecode'),
+            dict(type='Resize', scale=(224, 224), keep_ratio=False, lazy=True),
+            dict(type='VideoAug', degrees = 10, prob = 0.01),       # use a custom pipeline
+            dict(type='Flip', flip_ratio=0.5, lazy=True),
+            dict(
+                type='Normalize', mean=[
+                    123.675, 116.28, 103.53], std=[
+                    58.395, 57.12, 57.375], to_bgr=False),
+            dict(type='FormatShape', input_format='NCHW'),
+            dict(type='Collect', keys=['imgs', 'label'], meta_keys=[]),
+            dict(type='ToTensor', keys=['imgs', 'label'])
+        ]
+        cfg.train_pipeline = cfg.data.train.pipeline
     cfg.merge_from_dict(cfg_options)
     cfg.dump(fp_config_out)
     import pdb
