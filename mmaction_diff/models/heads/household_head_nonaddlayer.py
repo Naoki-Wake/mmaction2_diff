@@ -122,15 +122,15 @@ class HOUSEHOLDHead_NONADDLAYER(BaseHead):
         # [N, 1, num_classes]
         cls_score = self.consensus(cls_score)
         # [N, num_classes]
-        import pdb;
-        pdb.set_trace()
-        ret = cls_score.squeeze(1)
-        if len(self.class_bias) == self.num_classes:
-            y = torch.FloatTensor(self.class_bias).to(0)
-            y.repeat(cls_score.shape[0],1)
-            return ret+y
-        else:
-            return cls_score.squeeze(1)
+        #import pdb;
+        #pdb.set_trace()
+        #ret = cls_score.squeeze(1)
+        #if len(self.class_bias) == self.num_classes:
+        #    y = torch.FloatTensor(self.class_bias).to(0)
+        #    y.repeat(cls_score.shape[0],1)
+        #    return ret+y
+        #else:
+        return cls_score.squeeze(1)
     def loss(self, cls_score, labels, **kwargs):
         if self.modify_class_bias:
             import pdb;pdb.set_trace()
