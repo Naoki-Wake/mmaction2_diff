@@ -215,7 +215,7 @@ if __name__ == '__main__':
             dict(type='Collect', keys=['imgs', 'label'], meta_keys=[]),
             dict(type='ToTensor', keys=['imgs', 'label'])
         ]
-        import pdb; pdb.set_trace()
+        # import pdb; pdb.set_trace()
         cfg.train_pipeline = cfg.data.train.pipeline
     cfg.merge_from_dict(cfg_options)
     cfg.dump(fp_config_out)
