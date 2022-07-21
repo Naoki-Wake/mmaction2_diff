@@ -48,8 +48,14 @@ class HOUSEHOLDHead_NONADDLAYER(BaseHead):
         self.init_std = init_std
         self.is_shift = is_shift
         self.temporal_pool = temporal_pool
-        self.class_bias = class_bias
+        logP = class_bias
         #self.logP = hogehoge# memo: register buffer
+        self.register_buffer('logP', logP)
+        if len(self.class_bias) == self.num_classes:
+            self.modify_class_bias = True
+            print('modify class bias using logP')
+        else:
+            self.modify_class_bias = False
         consensus_ = consensus.copy()
 
         consensus_type = consensus_.pop('type')
@@ -63,7 +69,10 @@ class HOUSEHOLDHead_NONADDLAYER(BaseHead):
         else:
             self.dropout = None
         
-        self.fc_cls = nn.Linear(self.in_channels, self.num_classes) # bias=False
+        if self.modify_class_bias:
+            self.fc_cls = nn.Linear(self.in_channels, self.num_classes, bias=False)
+        else:
+            self.fc_cls = nn.Linear(self.in_channels, self.num_classes) # bias=False
 
         if self.spatial_type == 'avg':
             # use `nn.AdaptiveAvgPool2d` to adaptively match the in_channels.
@@ -118,7 +127,9 @@ class HOUSEHOLDHead_NONADDLAYER(BaseHead):
             return ret+y
         else:
             return cls_score.squeeze(1)
-#    def loss(self, cls_score, labels, **kwargs):
-#        cls_score = cls_score + self.logP # no need to repeat
-#        losses = super().loss(cls_score, labels, **kwargs)
-#        return losses
+    def loss(self, cls_score, labels, **kwargs):
+        if self.modify_class_bias:
+            import pdb;pdb.set_trace()
+            cls_score = cls_score + self.logP # no need to repeat
+        losses = super().loss(cls_score, labels, **kwargs)
+        return losses
