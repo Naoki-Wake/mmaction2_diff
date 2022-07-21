@@ -74,7 +74,7 @@ class HOUSEHOLDHead_NONADDLAYER(BaseHead):
             self.dropout = None
         
         if self.modify_class_bias:
-            self.fc_cls = nn.Linear(self.in_channels, self.num_classes, bias=False)
+            self.fc_cls = nn.Linear(self.in_channels, self.num_classes)#, bias=False)
         else:
             self.fc_cls = nn.Linear(self.in_channels, self.num_classes) # bias=False
 
