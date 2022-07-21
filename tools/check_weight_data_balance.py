@@ -6,7 +6,9 @@ import os.path as osp
 import os
 import argparse
 import matplotlib.pyplot as plt
-
+import sys
+sys.path.append("..") # Adds higher directory to python modules path.
+import mmaction_diff
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Run breakfast')
     parser.add_argument('--dir-root', default='/tmp/repo', type=str)
@@ -37,7 +39,7 @@ if __name__ == '__main__':
     weight = model.cls_head.fc_cls.weight.cpu().detach().numpy()
     bias = model.cls_head.fc_cls.bias.cpu().detach().numpy()
 
-    filename = osp.join(args.checkpointdir, '/breakfast_train_list_videos.txt')
+    filename = osp.join(args.annotationdir, 'breakfast_train_list_videos.txt')
     with open(filename, 'r') as f:
         lines = f.readlines()
 
@@ -80,4 +82,4 @@ if __name__ == '__main__':
     plt.clf()
     #copy this python file to /lfovision_log/debug/check_weight_data_balance
     import shutil
-    shutil.copy('./check_weight_data_balance.py'),osp(args.outdir,'check_weight_data_balance.py'))
+    shutil.copy('./check_weight_data_balance.py',osp(args.outdir,'check_weight_data_balance.py'))
