@@ -30,7 +30,7 @@ if __name__ == '__main__':
     checkpoint = osp.join(args.checkpointdir, 'epoch_50.pth')
     fp_config = osp.join(args.checkpointdir, 'config.py')
     subdir_name = args.checkpointdir.replace('/','_')
-    dir_out = osp.join(args.outpathdir)
+    dir_out = osp.join(args.outpathdir,subdir_name)
     # assign the desired device.
     device = torch.device('cuda:0')
     cfg = Config.fromfile(fp_config)
