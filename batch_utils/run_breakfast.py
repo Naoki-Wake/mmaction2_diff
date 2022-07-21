@@ -22,6 +22,11 @@ import numpy as np
 # --test-file-path
 # /lfovision_sthv2_breakfast/annotations/experiment_tsm_after_manual_correction/breakfast_test_list_videos.txt
 # python3 launch.py --cmd "python /tmp/repo/batch_utils/run_breakfast.py --lr 0.0001 # --bn-freeze 1 --scheduler-cosine 1 --videos-per-gpu 6 --workers-per-gpu 4 # --work-dir-root /lfovision_log/tsm_learningrate_alllayers_considering_labelbias/ # --only-header 0 --base-frozen-stages 1 --modify-class-bias 1"
+# git pull && python /tmp/repo/batch_utils/run_breakfast.py --lr 0.0001
+# --bn-freeze 1 --scheduler-cosine 1 --videos-per-gpu 6 --workers-per-gpu
+# 4 --work-dir-root
+# /lfovision_log/tsm_learningrate_alllayers_considering_labelbias_augmetation_flip/
+# --only-header 0 --base-frozen-stages 1 --modify-class-bias 1 --debug 1
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Run breakfast')
     parser.add_argument('--dir-root', default='/tmp/repo', type=str)
@@ -160,20 +165,40 @@ if __name__ == '__main__':
         with open(train_file_path, 'r') as f:
             lines = f.readlines()
         labels = [int(item.split(' ')[1].strip()) for item in lines]
-        #print(labels)
+        # print(labels)
         class_num = len(list(set(labels)))
         label_count = [labels.count(i) for i in range(class_num)]
         cfg.model.cls_head.class_bias = label_count
-        cfg.optimizer.constructor='TSMOptimizerConstructor_WO_BIAS'
+        cfg.optimizer.constructor = 'TSMOptimizerConstructor_WO_BIAS'
     else:
         cfg.model.cls_head.class_bias = []
     if args.debug == 1:
-        import pdb; pdb.set_trace()
+        #import pdb
+        # pdb.set_trace()
+        cfg.train_pipeline = [
+            dict(type='DecordInit'),
+            dict(
+                type='SampleFrames',
+                clip_len=1,
+                frame_interval=1,
+                num_clips=8),
+            # the definition of 1x1x8 comes from here
+            dict(type='DecordDecode'),
+            dict(type='Resize', scale=(224, 224), keep_ratio=False, lazy=True),
+            dict(type='Flip', flip_ratio=0.5),
+            dict(
+                type='Normalize', mean=[
+                    123.675, 116.28, 103.53], std=[
+                    58.395, 57.12, 57.375], to_bgr=False),
+            dict(type='FormatShape', input_format='NCHW'),
+            dict(type='Collect', keys=['imgs', 'label'], meta_keys=[]),
+            dict(type='ToTensor', keys=['imgs', 'label'])
+        ]
     cfg.merge_from_dict(cfg_options)
     cfg.dump(fp_config_out)
 
     if args.only_header == 1:
-        #train_command = str(osp.join(args.dir_root, "tools/dist_train_onlyheader.sh")) + \
+        # train_command = str(osp.join(args.dir_root, "tools/dist_train_onlyheader.sh")) + \
         #    " " + fp_config_out + " 1 --validate --seed 0 --deterministic --gpu-ids 0"
         train_command = "python " + str(osp.join(args.dir_root, "tools/train_onlyheader.py")) + \
             " " + fp_config_out + " --validate --seed 0 --deterministic --gpu-ids 0"
