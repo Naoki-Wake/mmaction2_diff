@@ -184,7 +184,7 @@ if __name__ == '__main__':
                 num_clips=8),
             dict(type='DecordDecode'),
             dict(type='Resize', scale=(224, 224), keep_ratio=False, lazy=True),
-            dict(type='Flip', flip_ratio=0.5),
+            dict(type='Flip', flip_ratio=0.5, lazy=True),
             dict(
                 type='Normalize', mean=[
                     123.675, 116.28, 103.53], std=[
