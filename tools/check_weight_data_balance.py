@@ -79,7 +79,7 @@ if __name__ == '__main__':
     plt.grid(True)
     # save figure
     #plt.show()
-    plt.savefig(str(osp.join(dir_out,subdr_name,'label_bias.png')))
+    plt.savefig(str(osp.join(dir_out,'label_bias.png')))
     # clear figure
     plt.clf()
     #copy this python file to /lfovision_log/debug/check_weight_data_balance
