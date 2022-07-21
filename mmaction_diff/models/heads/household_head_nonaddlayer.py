@@ -133,7 +133,7 @@ class HOUSEHOLDHead_NONADDLAYER(BaseHead):
         return cls_score.squeeze(1)
     def loss(self, cls_score, labels, **kwargs):
         if self.modify_class_bias:
-            import pdb;pdb.set_trace()
+            # import pdb;pdb.set_trace()
             cls_score = cls_score + self.logP # no need to repeat
         losses = super().loss(cls_score, labels, **kwargs)
         return losses
