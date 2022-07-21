@@ -29,7 +29,8 @@ if __name__ == '__main__':
     #----settings-----
     checkpoint = osp.join(args.checkpointdir, 'epoch_50.pth')
     fp_config = osp.join(args.checkpointdir, 'config.py')
-    dir_out = args.outpathdir
+    subdir_name = args.checkpointdir.replace('/','_')
+    dir_out = osp.join(args.outpathdir)
     # assign the desired device.
     device = torch.device('cuda:0')
     cfg = Config.fromfile(fp_config)
@@ -57,8 +58,8 @@ if __name__ == '__main__':
     # normalize
     weights = weights/np.max(weights)
     subdir_name = args.checkpointdir.replace('/','_')
-    if os.path.exists(dir_out,subdir_name) is False:
-        os.makedirs(dir_out,subdir_name)
+    if os.path.exists(dir_out) is False:
+        os.makedirs(dir_out)
     # scatter plot
     plt.scatter(label_count,weights)
     plt.xlabel('label ratio')
@@ -67,7 +68,7 @@ if __name__ == '__main__':
     # save figure
     #plt.show() 
     # insert text in the figure
-    plt.savefig(str(osp.join(dir_out,subdir_name,'label_weight.png')))
+    plt.savefig(str(osp.join(dir_out,'label_weight.png')))
     # clear figure
     plt.clf()
 
@@ -78,10 +79,10 @@ if __name__ == '__main__':
     plt.grid(True)
     # save figure
     #plt.show()
-    plt.savefig(str(osp.join(dir_out,subdir_name,'label_bias.png')))
+    plt.savefig(str(osp.join(dir_out,subdr_name,'label_bias.png')))
     # clear figure
     plt.clf()
     #copy this python file to /lfovision_log/debug/check_weight_data_balance
     import shutil
-    shutil.copy('./check_weight_data_balance.py',osp.join(dir_out,subdir_name,'check_weight_data_balance.py'))
+    shutil.copy('./check_weight_data_balance.py',osp.join(dir_out,'check_weight_data_balance.py'))
     
