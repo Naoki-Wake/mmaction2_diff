@@ -56,8 +56,9 @@ if __name__ == '__main__':
     #weights = [np.linalg.norm(weight[row,:], ord=2) for row in range(11)]
     # normalize
     weights = weights/np.max(weights)
-    if os.path.exists(dir_out) is False:
-        os.makedirs(dir_out)
+    subdir_name = args.checkpointdir.replace('/','_')
+    if os.path.exists(dir_out,subdir_name) is False:
+        os.makedirs(dir_out,subdir_name)
     # scatter plot
     plt.scatter(label_count,weights)
     plt.xlabel('label ratio')
@@ -66,8 +67,8 @@ if __name__ == '__main__':
     # save figure
     #plt.show() 
     # insert text in the figure
-    plt.text(0.5, 0.5, args.checkpointdir, fontsize=20, ha='center')
-    plt.savefig(str(osp.join(dir_out,'label_weight.png')))
+
+    plt.savefig(str(osp.join(dir_out,subdir_name,'label_weight.png')))
     # clear figure
     plt.clf()
 
@@ -76,10 +77,9 @@ if __name__ == '__main__':
     plt.xlabel('label ratio')
     plt.ylabel('bias')
     plt.grid(True)
-    plt.text(0.5, 0.5, args.checkpointdir, fontsize=20, ha='center')
     # save figure
     #plt.show()
-    plt.savefig(osp.join(dir_out,'label_bias.png'))
+    plt.savefig(str(osp.join(dir_out,subdir_name,'label_bias.png'))
     # clear figure
     plt.clf()
     #copy this python file to /lfovision_log/debug/check_weight_data_balance
