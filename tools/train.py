@@ -24,6 +24,7 @@ import sys
 sys.path.append("..") # Adds higher directory to python modules path.
 import mmaction_diff.models.heads.household_head_nonaddlayer
 import mmaction_diff.core.optimizer.tsm_optimizer_constructor_wo_bias
+import mmaction_diff.pipelines.augmentations_mypipeline
 
 def parse_args():
     parser = argparse.ArgumentParser(description='Train a recognizer')
