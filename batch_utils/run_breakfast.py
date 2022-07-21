@@ -219,8 +219,6 @@ if __name__ == '__main__':
         cfg.train_pipeline = cfg.data.train.pipeline
     cfg.merge_from_dict(cfg_options)
     cfg.dump(fp_config_out)
-    import pdb
-    pdb.set_trace()
     if args.only_header == 1:
         # train_command = str(osp.join(args.dir_root, "tools/dist_train_onlyheader.sh")) + \
         #    " " + fp_config_out + " 1 --validate --seed 0 --deterministic --gpu-ids 0"
