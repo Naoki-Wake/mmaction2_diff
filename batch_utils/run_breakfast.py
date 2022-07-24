@@ -221,7 +221,7 @@ if __name__ == '__main__':
         cfg.train_pipeline = cfg.data.train.pipeline
     cfg.merge_from_dict(cfg_options)
     if args.distributed != 0:
-        cfg.find_unused_parameters=False
+        cfg.find_unused_parameters=True
     cfg.dump(fp_config_out)
     if args.distributed == 0:
         if args.only_header == 1:
