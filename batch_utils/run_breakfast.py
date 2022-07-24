@@ -232,7 +232,7 @@ if __name__ == '__main__':
         import subprocess
     else:
         train_command = str(osp.join(args.dir_root, "tools/dist_train.sh")) + \
-            " " + fp_config_out + " " + int(args.distributed) + " --validate --seed 0 --deterministic"        
+            " " + fp_config_out + " " + args.distributed + " --validate --seed 0 --deterministic"        
     print(train_command)
     if not osp.exists(osp.join(
             osp.join(args.work_dir_root, work_dir_name),
