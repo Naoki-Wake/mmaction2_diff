@@ -76,6 +76,7 @@ if __name__ == '__main__':
     parser.add_argument('--modify-class-bias', default=0, type=int)
     parser.add_argument('--flip', default=0, type=int)
     parser.add_argument('--color', default=0, type=int)
+    parser.add_argument('--distributed', default=0, type=int)
     args = parser.parse_args()
     # ----settings-----
     if len(args.train_file_path) == 0:
@@ -219,15 +220,19 @@ if __name__ == '__main__':
         cfg.train_pipeline = cfg.data.train.pipeline
     cfg.merge_from_dict(cfg_options)
     cfg.dump(fp_config_out)
-    if args.only_header == 1:
-        # train_command = str(osp.join(args.dir_root, "tools/dist_train_onlyheader.sh")) + \
-        #    " " + fp_config_out + " 1 --validate --seed 0 --deterministic --gpu-ids 0"
-        train_command = "python " + str(osp.join(args.dir_root, "tools/train_onlyheader.py")) + \
-            " " + fp_config_out + " --validate --seed 0 --deterministic --gpu-ids 0"
+    if args.distributed == 0:
+        if args.only_header == 1:
+            # train_command = str(osp.join(args.dir_root, "tools/dist_train_onlyheader.sh")) + \
+            #    " " + fp_config_out + " 1 --validate --seed 0 --deterministic --gpu-ids 0"
+            train_command = "python " + str(osp.join(args.dir_root, "tools/train_onlyheader.py")) + \
+                " " + fp_config_out + " --validate --seed 0 --deterministic --gpu-ids 0"
+        else:
+            train_command = "python " + str(osp.join(args.dir_root, "tools/train.py")) + \
+                " " + fp_config_out + " --validate --seed 0 --deterministic --gpu-ids 0"
+        import subprocess
     else:
-        train_command = "python " + str(osp.join(args.dir_root, "tools/train.py")) + \
-            " " + fp_config_out + " --validate --seed 0 --deterministic --gpu-ids 0"
-    import subprocess
+        train_command = str(osp.join(args.dir_root, "tools/dist_train.sh")) + \
+            " " + fp_config_out + " " + int(args.distributed) + " --validate --seed 0 --deterministic"        
     print(train_command)
     if not osp.exists(osp.join(
             osp.join(args.work_dir_root, work_dir_name),
