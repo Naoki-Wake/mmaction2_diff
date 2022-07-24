@@ -27,6 +27,7 @@ import numpy as np
 # 4 --work-dir-root
 # /lfovision_log/tsm_learningrate_alllayers_considering_labelbias_augmetation_flip/
 # --only-header 0 --base-frozen-stages 1 --modify-class-bias 1 --debug 1
+# python /tmp/repo/batch_utils/run_breakfast.py --lr 0.00001 --bn-freeze 1 --scheduler-cosine 1 --videos-per-gpu 6 --workers-per-gpu 4 --work-dir-root /lfovision_log/tsm_relabeling/ --train-file-dir /lfovision_sthv2_breakfast/annotations/with_pseudo_relabeled --only-header 0 --base-frozen-stages 1 --modify-class-bias 1 --load-from /lfovision_log/tsm_learningrate_alllayers_considering_labelbias_wo_aug/lr_1e-05_wd_0.0005_momentum_0.9_bn_true_cosine/epoch_50.pth --train-file-path /lfovision_sthv2_breakfast/annotations/with_pseudo_relabeled/iteration_1/breakfast_train_list_videos_mixed.txt --distributed 2
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Run breakfast')
     parser.add_argument('--dir-root', default='/tmp/repo', type=str)
@@ -219,6 +220,8 @@ if __name__ == '__main__':
         # import pdb; pdb.set_trace()
         cfg.train_pipeline = cfg.data.train.pipeline
     cfg.merge_from_dict(cfg_options)
+    if args.distributed != 0:
+        cfg.find_unused_parameters=False
     cfg.dump(fp_config_out)
     if args.distributed == 0:
         if args.only_header == 1:
